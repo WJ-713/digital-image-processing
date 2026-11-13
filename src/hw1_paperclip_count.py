@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """
+Homework 1 - Paperclip Counting
 回形针计数（数字图像处理 · OpenCV）
 
 思路：
@@ -16,8 +17,8 @@
        并在图上画出轮廓、编号。
 
 用法：
-    python src/paperclip_counter.py
-    python src/paperclip_counter.py --input data/2181.png --output results
+    python src/hw1_paperclip_count.py
+    python src/hw1_paperclip_count.py --input data/hw1_paperclip_2181.png --output results
 """
 
 import argparse
@@ -32,7 +33,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 
 def parse_args():
     parser = argparse.ArgumentParser(description="统计图片中的回形针数量")
-    parser.add_argument("--input", default=str(REPO_ROOT / "data" / "2181.png"),
+    parser.add_argument("--input", default=str(REPO_ROOT / "data" / "hw1_paperclip_2181.png"),
                         help="输入图片路径")
     parser.add_argument("--output", default=str(REPO_ROOT / "results"),
                         help="输出目录（存放标注图与掩膜图）")
@@ -141,16 +142,16 @@ def main():
     markers = watershed_split(bgr, filled)
     result, count = count_and_draw(bgr, markers, args.min_area)
 
-    result_path = output_dir / (input_path.stem + "_result.png")
-    contour_path = output_dir / (input_path.stem + "_contour.png")
+    result_path = output_dir / "hw1_paperclip_result.png"
+    mask_path = output_dir / "hw1_paperclip_mask.png"
     cv2.imwrite(str(result_path), result)
-    cv2.imwrite(str(contour_path), filled)
+    cv2.imwrite(str(mask_path), filled)
 
     print("输入图片：%s" % input_path)
     print("二值图尺寸：%dx%d" % (binary.shape[1], binary.shape[0]))
     print("回形针数量：%d" % count)
     print("标注图：%s" % result_path)
-    print("前景掩膜：%s" % contour_path)
+    print("前景掩膜：%s" % mask_path)
 
 
 if __name__ == "__main__":
